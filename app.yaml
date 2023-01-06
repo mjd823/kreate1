@@ -1,0 +1,50 @@
+runtime: nodejs
+service: default
+
+env: flex
+
+# [START runtime_config]
+runtime_config:
+  node_env: production
+# [END runtime_config]
+
+
+handlers:
+- url: /css
+  static_dir: public/css
+- url: /js
+  static_dir: public/js
+- url: /images
+  static_dir: public/images
+- url: /
+  static_files: public/index.html
+  upload: public/index.html
+
+
+
+# [START automatic_scaling]
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 10
+  cool_down_period_sec: 120
+  cpu_utilization:
+    target_utilization: 0.6
+# [END automatic_scaling]
+
+# [START network]
+network:
+  instance_tag: image-generator
+  forwarded_ports:
+    - 8081
+  # the App Engine flexible environment, you must
+  # specify the network to which the instances of your application should be connected.
+  # For example:
+  # network: default
+# [END network]
+
+# [START resources]
+resources:
+  cpu: 2
+  memory_gb: 2
+  disk_size_gb: 10
+# [END resources]
